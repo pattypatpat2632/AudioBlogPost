@@ -42,7 +42,8 @@ class ViewController: UIViewController {
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         label.text = String(sender.value)
-        timeChange.rate = sender.value/bpm
+        newBpm = sender.value
+        timeChange.rate = newBpm/bpm
     }
     
     @IBAction func playButtonTapped(_ sender: Any) {
