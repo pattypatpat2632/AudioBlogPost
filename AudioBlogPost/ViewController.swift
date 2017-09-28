@@ -12,15 +12,16 @@ import AVFoundation
 class ViewController: UIViewController {
     var audioEngine = AVAudioEngine()
     var playerNode = AVAudioPlayerNode()
-    var buffer: AVAudioBuffer?
-    var frameCount: AVAudioFrameCount = 30000
-    var player: AVAudioPlayer?
-    let changePitch = AVAudioUnitTimePitch()
+    let timeChange = AVAudioUnitTimePitch()
+    var bpm: Float = 120
     
+    var timer = Timer()
+    
+    @IBOutlet weak var tempoTap: UIButton!
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var playButton: UIButton!
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setup()
@@ -29,18 +30,18 @@ class ViewController: UIViewController {
     func setup() {
         label.text = "120"
         audioEngine.attach(playerNode)
-        audioEngine.attach(changePitch)
-        audioEngine.connect(playerNode, to: changePitch, format: nil)//format can be buffer.format
-        audioEngine.connect(changePitch, to: audioEngine.mainMixerNode, format: nil)//format can be buffer.format
+        audioEngine.attach(timeChange)
+        audioEngine.connect(playerNode, to: timeChange, format: nil)//format can be buffer.format
+        audioEngine.connect(timeChange, to: audioEngine.mainMixerNode, format: nil)//format can be buffer.format
         audioEngine.prepare()
-        try! audioEngine.start()
+        do {
+            try audioEngine.start()
+        } catch {}
     }
-
+    
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         label.text = String(sender.value)
-        changePitch.rate = sender.value/120
-        
-        
+        timeChange.rate = sender.value/bpm
     }
     
     @IBAction func playButtonTapped(_ sender: Any) {
@@ -49,7 +50,7 @@ class ViewController: UIViewController {
             
             do {
                 let audioFile = try AVAudioFile(forReading: url)
-                changePitch.rate = slider.value/120
+                timeChange.rate = slider.value/bpm
                 playerNode.scheduleFile(audioFile, at: nil, completionHandler: nil)
             } catch {
                 
@@ -57,8 +58,11 @@ class ViewController: UIViewController {
         }
         playerNode.play()
     }
-
-
-
+    
+    @IBAction func tappedTempo(_ sender: UIButton) {
+        if timer.isValid {
+            timer.invalidate()
+        }
+    }
 }
 

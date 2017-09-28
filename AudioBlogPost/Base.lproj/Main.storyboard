@@ -43,6 +43,14 @@
                                     <action selector="playButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="jHu-XQ-YBa"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Xk-TZ-D3M">
+                                <rect key="frame" x="172" y="475" width="30" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" title="Tap"/>
+                                <connections>
+                                    <action selector="tappedTempo:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cPa-by-msp"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     </view>
@@ -50,6 +58,7 @@
                         <outlet property="label" destination="2e4-lX-ERb" id="KML-g5-a5q"/>
                         <outlet property="playButton" destination="035-lr-TTn" id="h9q-Lf-Xr8"/>
                         <outlet property="slider" destination="bqm-hk-iQI" id="f4W-FE-VxY"/>
+                        <outlet property="tempoTap" destination="3Xk-TZ-D3M" id="GtJ-oj-3X8"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
