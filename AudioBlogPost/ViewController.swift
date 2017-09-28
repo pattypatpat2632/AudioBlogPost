@@ -9,6 +9,8 @@
 import UIKit
 
 class ViewController: UIViewController {
+    @IBOutlet weak var slider: UISlider!
+    @IBOutlet weak var label: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -18,6 +20,9 @@ class ViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    @IBAction func sliderValueChanged(_ sender: UISlider) {
+        label.text = String(slider.value)
     }
 
 
