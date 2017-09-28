@@ -15,7 +15,7 @@ class ViewController: UIViewController {
     let timeChange = AVAudioUnitTimePitch()
     var bpm: Float = 120
     
-    var timer = Timer()
+    var lastTap: Date? = nil
     
     @IBOutlet weak var tempoTap: UIButton!
     @IBOutlet weak var slider: UISlider!
@@ -60,9 +60,16 @@ class ViewController: UIViewController {
     }
     
     @IBAction func tappedTempo(_ sender: UIButton) {
-        if timer.isValid {
-            timer.invalidate()
+        let currentTap = Date()
+        if let lastTap = self.lastTap {
+            
+            let interval = currentTap.timeIntervalSince(lastTap)
+            let newBpm = Float(60/interval)
+            timeChange.rate = newBpm/bpm
+            label.text = String(newBpm)
+            
         }
+        self.lastTap = currentTap
     }
 }
 
