@@ -12,6 +12,7 @@
 		EC2E54681F7D8EA000FA6A97 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC2E54661F7D8EA000FA6A97 /* Main.storyboard */; };
 		EC2E546A1F7D8EA000FA6A97 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EC2E54691F7D8EA000FA6A97 /* Assets.xcassets */; };
 		EC2E546D1F7D8EA000FA6A97 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = EC2E546B1F7D8EA000FA6A97 /* LaunchScreen.storyboard */; };
+		EC2E54751F7D969800FA6A97 /* keys.wav in Resources */ = {isa = PBXBuildFile; fileRef = EC2E54741F7D969800FA6A97 /* keys.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,6 +23,7 @@
 		EC2E54691F7D8EA000FA6A97 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		EC2E546C1F7D8EA000FA6A97 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		EC2E546E1F7D8EA000FA6A97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		EC2E54741F7D969800FA6A97 /* keys.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = keys.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -54,6 +56,7 @@
 		EC2E54611F7D8EA000FA6A97 /* AudioBlogPost */ = {
 			isa = PBXGroup;
 			children = (
+				EC2E54741F7D969800FA6A97 /* keys.wav */,
 				EC2E54621F7D8EA000FA6A97 /* AppDelegate.swift */,
 				EC2E54641F7D8EA000FA6A97 /* ViewController.swift */,
 				EC2E54661F7D8EA000FA6A97 /* Main.storyboard */,
@@ -124,6 +127,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EC2E54751F7D969800FA6A97 /* keys.wav in Resources */,
 				EC2E546D1F7D8EA000FA6A97 /* LaunchScreen.storyboard in Resources */,
 				EC2E546A1F7D8EA000FA6A97 /* Assets.xcassets in Resources */,
 				EC2E54681F7D8EA000FA6A97 /* Main.storyboard in Resources */,
