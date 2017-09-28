@@ -14,6 +14,7 @@ class ViewController: UIViewController {
     var playerNode = AVAudioPlayerNode()
     let timeChange = AVAudioUnitTimePitch()
     var bpm: Float = 120
+    var newBpm: Float = 120
     
     var lastTap: Date? = nil
     
@@ -50,7 +51,7 @@ class ViewController: UIViewController {
             
             do {
                 let audioFile = try AVAudioFile(forReading: url)
-                timeChange.rate = slider.value/bpm
+                timeChange.rate = newBpm/bpm
                 playerNode.scheduleFile(audioFile, at: nil, completionHandler: nil)
             } catch {
                 
@@ -64,7 +65,7 @@ class ViewController: UIViewController {
         if let lastTap = self.lastTap {
             
             let interval = currentTap.timeIntervalSince(lastTap)
-            let newBpm = Float(60/interval)
+            newBpm = Float(60/interval)
             timeChange.rate = newBpm/bpm
             label.text = String(newBpm)
             
