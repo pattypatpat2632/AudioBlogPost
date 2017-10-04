@@ -130,5 +130,20 @@ class ViewController: UIViewController {
         label.text = String(adjustedBpm)
         timerCount = 10
     }
+    
+    func averageOutSteps() {
+        let startDate = Date()
+        pedoMeter.startUpdates(from: startDate) { (data, error) in
+            if let dataSteps = data?.numberOfSteps.intValue {
+                let timeInterval = startDate.timeIntervalSinceNow
+                self.steps = dataSteps
+                let sps: Float = Float(self.steps)/Float(timeInterval)
+                let spm: Float = sps*60
+                self.adjustedBpm = spm
+                self.timeShift.rate = self.adjustedBpm/self.bpm
+                self.label.text = String(self.adjustedBpm)
+            }
+        }
+    }
 }
 
