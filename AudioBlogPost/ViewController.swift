@@ -95,6 +95,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func getSpmTapped(_ sender: UIButton) {
+        guard !timer.isValid else {return}
         startCountingSteps()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
             self.timerCount -= 1
@@ -107,9 +108,11 @@ class ViewController: UIViewController {
         if CMPedometer.isStepCountingAvailable() {
             pedoMeter.startUpdates(from: Date()) { (data, error) in
                 if let dataSteps = data?.numberOfSteps.intValue {
-                    print("VALID STEPS")
                     self.steps = dataSteps
-                    self.stepCountLabel.text = String(dataSteps)
+                    DispatchQueue.main.async {
+                        self.stepCountLabel.text = String(dataSteps)
+                    }
+                    
                 }
             }
         } else {
