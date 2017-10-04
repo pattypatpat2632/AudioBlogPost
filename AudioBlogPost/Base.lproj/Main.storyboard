@@ -70,6 +70,20 @@
                                     <action selector="getSpmTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="cb9-WP-YDY"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tku-59-b7A">
+                                <rect key="frame" x="166" y="590" width="42" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Step Count" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CO9-r4-X3a">
+                                <rect key="frame" x="24" y="542" width="87" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.50196081400000003" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
@@ -77,7 +91,9 @@
                         <outlet property="label" destination="2e4-lX-ERb" id="KML-g5-a5q"/>
                         <outlet property="playButton" destination="035-lr-TTn" id="h9q-Lf-Xr8"/>
                         <outlet property="slider" destination="bqm-hk-iQI" id="f4W-FE-VxY"/>
+                        <outlet property="stepCountLabel" destination="CO9-r4-X3a" id="g7g-QF-Mbh"/>
                         <outlet property="tempoTap" destination="3Xk-TZ-D3M" id="GtJ-oj-3X8"/>
+                        <outlet property="timerLabel" destination="Tku-59-b7A" id="5dI-Wy-XvL"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>

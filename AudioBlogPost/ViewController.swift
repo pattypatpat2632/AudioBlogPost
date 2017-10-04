@@ -20,6 +20,13 @@ class ViewController: UIViewController {
     var newBpm: Float = 120
     var steps: Int = 0
     var timer = Timer()
+    var timerCount = 10 {
+        didSet {
+            if timerCount == 0 {
+                stopCountingSteps()
+            }
+        }
+    }
     
     var lastTap: Date? = nil
     
@@ -27,6 +34,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var slider: UISlider!
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var playButton: UIButton!
+    @IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var stepCountLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +49,8 @@ class ViewController: UIViewController {
         audioEngine.connect(playerNode, to: timeChange, format: nil)
         audioEngine.connect(timeChange, to: audioEngine.mainMixerNode, format: nil)
         audioEngine.prepare()
+        timerLabel.text = ""
+        stepCountLabel.text = ""
         do {
             try audioEngine.start()
         } catch {
@@ -85,17 +96,24 @@ class ViewController: UIViewController {
     
     @IBAction func getSpmTapped(_ sender: UIButton) {
         startCountingSteps()
-        timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { (_) in
-            self.stopCountingSteps()
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
+            self.timerCount -= 1
+            self.timerLabel.text = String(self.timerCount)
         }
     }
     
     func startCountingSteps() {
         self.view.backgroundColor = UIColor.red
-        pedoMeter.startUpdates(from: Date()) { (data, error) in
-            if let dataSteps = data?.numberOfSteps.intValue {
-                self.steps = dataSteps
+        if CMPedometer.isStepCountingAvailable() {
+            pedoMeter.startUpdates(from: Date()) { (data, error) in
+                if let dataSteps = data?.numberOfSteps.intValue {
+                    print("VALID STEPS")
+                    self.steps = dataSteps
+                    self.stepCountLabel.text = String(dataSteps)
+                }
             }
+        } else {
+            print("step counting not available")
         }
     }
     
@@ -106,6 +124,7 @@ class ViewController: UIViewController {
         newBpm = Float(steps)*6
         timeChange.rate = newBpm
         label.text = String(newBpm)
+        timerCount = 10
     }
 }
 
