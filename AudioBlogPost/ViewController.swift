@@ -8,13 +8,17 @@
 
 import UIKit
 import AVFoundation
+import CoreMotion
 
 class ViewController: UIViewController {
+    
     var audioEngine = AVAudioEngine()
     var playerNode = AVAudioPlayerNode()
     let timeChange = AVAudioUnitTimePitch()
+    let pedoMeter = CMPedometer()
     var bpm: Float = 120
     var newBpm: Float = 120
+    var steps: Int = 0
     
     var lastTap: Date? = nil
     
@@ -32,12 +36,14 @@ class ViewController: UIViewController {
         label.text = "120"
         audioEngine.attach(playerNode)
         audioEngine.attach(timeChange)
-        audioEngine.connect(playerNode, to: timeChange, format: nil)//format can be buffer.format
-        audioEngine.connect(timeChange, to: audioEngine.mainMixerNode, format: nil)//format can be buffer.format
+        audioEngine.connect(playerNode, to: timeChange, format: nil)
+        audioEngine.connect(timeChange, to: audioEngine.mainMixerNode, format: nil)
         audioEngine.prepare()
         do {
             try audioEngine.start()
-        } catch {}
+        } catch {
+            print("Could not start audio engine")
+        }
     }
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
@@ -55,8 +61,10 @@ class ViewController: UIViewController {
                 timeChange.rate = newBpm/bpm
                 playerNode.scheduleFile(audioFile, at: nil, completionHandler: nil)
             } catch {
-                
+                print("could not load audio file")
             }
+        } else {
+            print("could not load audio file")
         }
         playerNode.play()
     }
@@ -72,6 +80,30 @@ class ViewController: UIViewController {
             
         }
         self.lastTap = currentTap
+    }
+    
+    @IBAction func getSpmTapped(_ sender: UIButton) {
+        startCountingSteps()
+        let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { (_) in
+            self.stopCountingSteps()
+        }
+    }
+    
+    func startCountingSteps() {
+        self.view.backgroundColor = UIColor.red
+        pedoMeter.startUpdates(from: Date()) { (data, error) in
+            if let dataSteps = data?.numberOfSteps.intValue {
+                self.steps = dataSteps
+            }
+        }
+    }
+    
+    func stopCountingSteps() {
+        self.view.backgroundColor = UIColor.green
+        pedoMeter.stopUpdates()
+        newBpm = Float(steps)*6
+        timeChange.rate = newBpm
+        label.text = String(newBpm)
     }
 }
 

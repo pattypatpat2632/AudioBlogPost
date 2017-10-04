@@ -306,6 +306,7 @@
 				EC2E54731F7D8EA000FA6A97 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
