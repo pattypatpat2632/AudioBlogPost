@@ -148,16 +148,19 @@ class ViewController: UIViewController {
     
     func averageOutSteps() {
         let startDate = Date()
-        pedoMeter.startUpdates(from: startDate) { (data, error) in
+        pedoMeter.startUpdates(from: Date()) { (data, error) in
             if let dataSteps = data?.numberOfSteps.intValue {
+                print("STEP UPDATE")
                 let timeInterval = startDate.timeIntervalSinceNow
                 self.steps = dataSteps
-                let sps: Float = Float(self.steps)/Float(timeInterval)
+                let sps: Float = -Float(self.steps)/Float(timeInterval)
                 let spm: Float = sps*60
                 self.adjustedBpm = spm
                 self.timeShift.rate = self.adjustedBpm/self.bpm
-                self.label.text = String(self.adjustedBpm)
-                self.stepCountLabel.text = String(dataSteps)
+                DispatchQueue.main.async {
+                    self.label.text = String(self.adjustedBpm)
+                    self.stepCountLabel.text = String(dataSteps)
+                }
             }
         }
     }
