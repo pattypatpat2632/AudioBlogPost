@@ -104,6 +104,8 @@ class ViewController: UIViewController {
             self.timerLabel.text = String(self.timerCount)
         }
     }
+    @IBAction func avgWalkTapped(_ sender: UIButton) {
+    }
     
     func startCountingSteps() {
         self.view.backgroundColor = UIColor.red
