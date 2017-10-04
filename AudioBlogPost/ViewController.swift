@@ -14,12 +14,14 @@ class ViewController: UIViewController {
     
     var audioEngine = AVAudioEngine()
     var playerNode = AVAudioPlayerNode()
-    let timeChange = AVAudioUnitTimePitch()
+    let timeShift = AVAudioUnitTimePitch()
     let pedoMeter = CMPedometer()
-    var bpm: Float = 120
-    var newBpm: Float = 120
+    let bpm: Float = 120
+    
     var steps: Int = 0
     var timer = Timer()
+    var adjustedBpm: Float = 120
+    
     var timerCount = 10 {
         didSet {
             if timerCount == 0 {
@@ -45,9 +47,9 @@ class ViewController: UIViewController {
     func setup() {
         label.text = "120"
         audioEngine.attach(playerNode)
-        audioEngine.attach(timeChange)
-        audioEngine.connect(playerNode, to: timeChange, format: nil)
-        audioEngine.connect(timeChange, to: audioEngine.mainMixerNode, format: nil)
+        audioEngine.attach(timeShift)
+        audioEngine.connect(playerNode, to: timeShift, format: nil)
+        audioEngine.connect(timeShift, to: audioEngine.mainMixerNode, format: nil)
         audioEngine.prepare()
         timerLabel.text = ""
         stepCountLabel.text = ""
@@ -60,8 +62,8 @@ class ViewController: UIViewController {
     
     @IBAction func sliderValueChanged(_ sender: UISlider) {
         label.text = String(sender.value)
-        newBpm = sender.value
-        timeChange.rate = newBpm/bpm
+        adjustedBpm = sender.value
+        timeShift.rate = adjustedBpm/bpm
     }
     
     @IBAction func playButtonTapped(_ sender: Any) {
@@ -70,7 +72,7 @@ class ViewController: UIViewController {
             
             do {
                 let audioFile = try AVAudioFile(forReading: url)
-                timeChange.rate = newBpm/bpm
+                timeShift.rate = adjustedBpm/bpm
                 playerNode.scheduleFile(audioFile, at: nil, completionHandler: nil)
             } catch {
                 print("could not load audio file")
@@ -86,9 +88,9 @@ class ViewController: UIViewController {
         if let lastTap = self.lastTap {
             
             let interval = currentTap.timeIntervalSince(lastTap)
-            newBpm = Float(60/interval)
-            timeChange.rate = newBpm/bpm
-            label.text = String(newBpm)
+            adjustedBpm = Float(60/interval)
+            timeShift.rate = adjustedBpm/bpm
+            label.text = String(adjustedBpm)
             
         }
         self.lastTap = currentTap
@@ -112,7 +114,6 @@ class ViewController: UIViewController {
                     DispatchQueue.main.async {
                         self.stepCountLabel.text = String(dataSteps)
                     }
-                    
                 }
             }
         } else {
@@ -124,9 +125,9 @@ class ViewController: UIViewController {
         timer.invalidate()
         self.view.backgroundColor = UIColor.green
         pedoMeter.stopUpdates()
-        newBpm = Float(steps)*6
-        timeChange.rate = newBpm
-        label.text = String(newBpm)
+        adjustedBpm = Float(steps)*6
+        timeShift.rate = adjustedBpm/bpm
+        label.text = String(adjustedBpm)
         timerCount = 10
     }
 }
