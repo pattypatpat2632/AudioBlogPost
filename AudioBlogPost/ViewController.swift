@@ -17,6 +17,7 @@ class ViewController: UIViewController {
     let timeShift = AVAudioUnitTimePitch()
     let pedoMeter = CMPedometer()
     let bpm: Float = 120
+    var avgStarted: Bool = false
     
     var steps: Int = 0
     var timer = Timer()
@@ -38,6 +39,7 @@ class ViewController: UIViewController {
     @IBOutlet weak var playButton: UIButton!
     @IBOutlet weak var timerLabel: UILabel!
     @IBOutlet weak var stepCountLabel: UILabel!
+    @IBOutlet weak var avgLabel: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -105,6 +107,17 @@ class ViewController: UIViewController {
         }
     }
     @IBAction func avgWalkTapped(_ sender: UIButton) {
+        if !avgStarted {
+            avgStarted = true
+            self.view.backgroundColor = UIColor.blue
+            averageOutSteps()
+            avgLabel.setTitle("Stop", for: .normal)
+        } else {
+            self.view.backgroundColor = UIColor.green
+            avgStarted = false
+            stopAveragingSteps()
+            avgLabel.setTitle("Start", for: .normal)
+        }
     }
     
     func startCountingSteps() {
@@ -144,8 +157,13 @@ class ViewController: UIViewController {
                 self.adjustedBpm = spm
                 self.timeShift.rate = self.adjustedBpm/self.bpm
                 self.label.text = String(self.adjustedBpm)
+                self.stepCountLabel.text = String(dataSteps)
             }
         }
+    }
+    
+    func stopAveragingSteps() {
+        pedoMeter.stopUpdates()
     }
 }
 

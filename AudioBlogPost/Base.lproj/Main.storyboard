@@ -98,6 +98,7 @@
                         <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
                     <connections>
+                        <outlet property="avgLabel" destination="SDg-f1-fsQ" id="Cg0-cI-Sk4"/>
                         <outlet property="label" destination="2e4-lX-ERb" id="KML-g5-a5q"/>
                         <outlet property="playButton" destination="035-lr-TTn" id="h9q-Lf-Xr8"/>
                         <outlet property="slider" destination="bqm-hk-iQI" id="f4W-FE-VxY"/>
