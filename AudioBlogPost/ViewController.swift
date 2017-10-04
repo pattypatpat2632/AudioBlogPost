@@ -19,6 +19,7 @@ class ViewController: UIViewController {
     var bpm: Float = 120
     var newBpm: Float = 120
     var steps: Int = 0
+    var timer = Timer()
     
     var lastTap: Date? = nil
     
@@ -84,7 +85,7 @@ class ViewController: UIViewController {
     
     @IBAction func getSpmTapped(_ sender: UIButton) {
         startCountingSteps()
-        let timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { (_) in
+        timer = Timer.scheduledTimer(withTimeInterval: 10, repeats: false) { (_) in
             self.stopCountingSteps()
         }
     }
@@ -99,6 +100,7 @@ class ViewController: UIViewController {
     }
     
     func stopCountingSteps() {
+        timer.invalidate()
         self.view.backgroundColor = UIColor.green
         pedoMeter.stopUpdates()
         newBpm = Float(steps)*6
