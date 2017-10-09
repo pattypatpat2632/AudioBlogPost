@@ -71,7 +71,6 @@ class ViewController: UIViewController {
     
     @IBAction func playButtonTapped(_ sender: Any) {
        playKeys()
-        
     }
     
     @IBAction func tappedTempo(_ sender: UIButton) {
@@ -90,6 +89,7 @@ class ViewController: UIViewController {
     @IBAction func getSpmTapped(_ sender: UIButton) {
         getSpm()
     }
+    
     @IBAction func avgWalkTapped(_ sender: UIButton) {
         if !avgStarted {
             avgStarted = true
@@ -117,7 +117,6 @@ class ViewController: UIViewController {
     private func playKeys() {
         let url = Bundle.main.url(forResource: "keys", withExtension: ".wav")
         if let url = url {
-            
             do {
                 let audioFile = try AVAudioFile(forReading: url)
                 timeShift.rate = adjustedBpm/bpm
@@ -143,7 +142,7 @@ class ViewController: UIViewController {
     func startCountingSteps() {
         self.view.backgroundColor = UIColor.red
         if CMPedometer.isStepCountingAvailable() {
-            pedoMeter.startUpdates(from: Date()) { (data, error) in
+            pedoMeter.startUpdates(from: Date()) { (data, _) in
                 if let dataSteps = data?.numberOfSteps.intValue {
                     self.steps = dataSteps
                     DispatchQueue.main.async {
