@@ -12,6 +12,7 @@ import CoreMotion
 
 class ViewController: UIViewController {
     
+    @IBOutlet var startAllButton: UIButton!
     var audioEngine = AVAudioEngine()
     var playerNode = AVAudioPlayerNode()
     let timeShift = AVAudioUnitTimePitch()
@@ -69,20 +70,8 @@ class ViewController: UIViewController {
     }
     
     @IBAction func playButtonTapped(_ sender: Any) {
-        let url = Bundle.main.url(forResource: "keys", withExtension: ".wav")
-        if let url = url {
-            
-            do {
-                let audioFile = try AVAudioFile(forReading: url)
-                timeShift.rate = adjustedBpm/bpm
-                playerNode.scheduleFile(audioFile, at: nil, completionHandler: nil)
-            } catch {
-                print("could not load audio file")
-            }
-        } else {
-            print("could not load audio file")
-        }
-        playerNode.play()
+       playKeys()
+        
     }
     
     @IBAction func tappedTempo(_ sender: UIButton) {
@@ -99,12 +88,7 @@ class ViewController: UIViewController {
     }
     
     @IBAction func getSpmTapped(_ sender: UIButton) {
-        guard !timer.isValid else {return}
-        startCountingSteps()
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
-            self.timerCount -= 1
-            self.timerLabel.text = String(self.timerCount)
-        }
+        getSpm()
     }
     @IBAction func avgWalkTapped(_ sender: UIButton) {
         if !avgStarted {
@@ -117,6 +101,42 @@ class ViewController: UIViewController {
             avgStarted = false
             stopAveragingSteps()
             avgLabel.setTitle("Start", for: .normal)
+        }
+    }
+  
+    @IBAction func startAllTapped(_ sender: Any) {
+        startAllButton.setTitle("Playing", for: .normal)
+        playKeys()
+        let timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { (_) in
+            self.playKeys()
+            let now = Date()
+            self.averageOutStepsFrom(now - 30, to: now)
+        }
+    }
+    
+    private func playKeys() {
+        let url = Bundle.main.url(forResource: "keys", withExtension: ".wav")
+        if let url = url {
+            
+            do {
+                let audioFile = try AVAudioFile(forReading: url)
+                timeShift.rate = adjustedBpm/bpm
+                playerNode.scheduleFile(audioFile, at: nil, completionHandler: nil)
+            } catch {
+                print("could not load audio file")
+            }
+        } else {
+            print("could not load audio file")
+        }
+        playerNode.play()
+    }
+    
+    private func getSpm() {
+        guard !timer.isValid else {return}
+        startCountingSteps()
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { (timer) in
+            self.timerCount -= 1
+            self.timerLabel.text = String(self.timerCount)
         }
     }
     
@@ -162,6 +182,24 @@ class ViewController: UIViewController {
                     self.stepCountLabel.text = String(dataSteps)
                 }
             }
+        }
+    }
+    
+    func averageOutStepsFrom(_ startDate: Date, to endDate: Date) {
+        if(CMPedometer.isStepCountingAvailable()){
+            self.pedoMeter.queryPedometerData(from: startDate, to: endDate, withHandler: { (data, _) in
+                if let steps = data?.numberOfSteps.floatValue {
+                    let interval = Float(endDate.timeIntervalSince(startDate))
+                    let mult: Float = 60.0/interval
+                    let spm = steps*mult
+                    self.adjustedBpm = spm
+                    self.timeShift.rate = self.adjustedBpm/self.bpm
+                    DispatchQueue.main.async {
+                        self.label.text = String(self.adjustedBpm)
+                        self.stepCountLabel.text = String(steps)
+                    }
+                }
+            })
         }
     }
     
